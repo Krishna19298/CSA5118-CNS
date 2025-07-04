@@ -1,0 +1,40 @@
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+void analyze(char *t,int *f){
+    for(int i=0;i<strlen(t);i++){
+        if(isalpha(t[i])){
+            f[tolower(t[i])-'a']++;
+        }
+    }
+}
+void rotate(char *sub) {
+    char temp=sub[0];
+    for(int i=0;i<25;i++){
+        sub[i]=sub[i+1];
+    }
+    sub[25]=temp;
+}
+void Plain(char *cipher, int *f) {
+    char sub[26]={'e','t','a','o','i','n','s','h','r','d','l','u','c','m','f','y','p','b','g','v','k','w','x','j','q','z'};
+    char plain[100];
+    for (int i=0;i<10;i++){
+        for (int j=0;j<strlen(cipher);j++){
+            if (isalpha(cipher[j])){
+                plain[j]=sub[(cipher[j]-'a')%26];
+            }else{
+                plain[j]=cipher[j];
+            }
+        }
+        plain[strlen(cipher)]='\0';
+        printf("possible Plaintext %d: %s\n", i + 1, plain);
+        rotate(sub);
+    }
+}
+int main() {
+    char cipher[]="hello";
+    int f[26]={0};
+    analyze(cipher,f);
+    Plain(cipher,f);
+    return 0;
+}
